@@ -16,68 +16,68 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "question_list")
 public class Question implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) 
-	private long id;
-	private String title;
-	private String image;
-	private String type;
-	
-	@OneToMany(mappedBy = "question")
-	private List<Answer> answers;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    private String title;
+    private String image;
+    private String type;
 
-	@ManyToOne
-	@JoinColumn(name = "exam_code")
-	private Exam exam;
+    @OneToMany(mappedBy = "question")
+    private List<Answer> answers;
 
-	public long getId() {
-		return id;
-	}
+    @ManyToOne
+    @JoinColumn(name = "exam_code")
+    private Exam exam;
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public String getImage() {
-		return image;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public void setImage(String image) {
-		this.image = image;
-	}
+    public String getImage() {
+        return image;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public void setImage(String image) {
+        this.image = image;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public Exam getExam() {
-		return exam;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public void setExam(Exam exam) {
-		this.exam = exam;
-	}
+    public Exam getExam() {
+        return exam;
+    }
 
-	public List<Answer> getAnswers() {
-		return answers;
-	}
+    public void setExam(Exam exam) {
+        this.exam = exam;
+    }
 
-	public void setAnswers(List<Answer> answers) {
-		this.answers = answers;
-	}
+    public List<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
+    }
 
 }

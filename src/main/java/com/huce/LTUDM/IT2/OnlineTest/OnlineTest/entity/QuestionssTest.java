@@ -16,88 +16,88 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "questionss_test")
 public class QuestionssTest implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-	private String title;
-	private int type;
-	private String image;
-	private int result;
-	@Column(name = "question_id")
-	private int questionId;
+    private String title;
+    private int type;
+    private String image;
+    private int result;
+    @Column(name = "question_id")
+    private int questionId;
 
-	@ManyToOne
-	@JoinColumn(name = "test_id")
-	private Test test;
+    @ManyToOne
+    @JoinColumn(name = "test_id")
+    private Test test;
 
-	@OneToMany(mappedBy = "question")
-	private List<StudentssAnswer> studentssAnswers;
+    @OneToMany(mappedBy = "question")
+    private List<StudentssAnswer> studentssAnswers;
 
-	public long getId() {
-		return id;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public int getType() {
-		return type;
-	}
+    public int getType() {
+        return type;
+    }
 
-	public void setType(int type) {
-		this.type = type;
-	}
+    public void setType(int type) {
+        this.type = type;
+    }
 
-	public String getImage() {
-		return image;
-	}
+    public String getImage() {
+        return image;
+    }
 
-	public void setImage(String image) {
-		this.image = image;
-	}
+    public void setImage(String image) {
+        this.image = image;
+    }
 
-	public int getResult() {
-		return result;
-	}
+    public int getResult() {
+        return result;
+    }
 
-	public void setResult(int result) {
-		this.result = result;
-	}
+    public void setResult(int result) {
+        this.result = result;
+    }
 
-	public int getQuestionId() {
-		return questionId;
-	}
+    public int getQuestionId() {
+        return questionId;
+    }
 
-	public void setQuestionId(int questionId) {
-		this.questionId = questionId;
-	}
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
+    }
 
-	public Test getTest() {
-		return test;
-	}
+    public Test getTest() {
+        return test;
+    }
 
-	public void setTest(Test test) {
-		this.test = test;
-	}
+    public void setTest(Test test) {
+        this.test = test;
+    }
 
-	public List<StudentssAnswer> getStudentssAnswers() {
-		return studentssAnswers;
-	}
+    public List<StudentssAnswer> getStudentssAnswers() {
+        return studentssAnswers;
+    }
 
-	public void setStudentssAnswers(List<StudentssAnswer> studentssAnswers) {
-		this.studentssAnswers = studentssAnswers;
-	}
+    public void setStudentssAnswers(List<StudentssAnswer> studentssAnswers) {
+        this.studentssAnswers = studentssAnswers;
+    }
 
 }

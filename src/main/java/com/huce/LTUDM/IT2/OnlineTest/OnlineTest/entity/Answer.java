@@ -14,49 +14,49 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "answer")
 public class Answer implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) 
-	private long id;
-	private String content;
-	@Column(name = "true_false")
-	private int TF;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    private String content;
+    @Column(name = "true_false")
+    private int TF;
 
-	@ManyToOne
-	@JoinColumn(name = "question_id")
-	private Question question;
+    @ManyToOne
+    @JoinColumn(name = "question_id")
+    private Question question;
 
-	public long getId() {
-		return id;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public int getTF() {
-		return TF;
-	}
+    public int getTF() {
+        return TF;
+    }
 
-	public void setTF(int tF) {
-		TF = tF;
-	}
+    public void setTF(int tF) {
+        TF = tF;
+    }
 
-	public Question getQuestion() {
-		return question;
-	}
+    public Question getQuestion() {
+        return question;
+    }
 
-	public void setQuestion(Question question) {
-		this.question = question;
-	}
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
 
 }

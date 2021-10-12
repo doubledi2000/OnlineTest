@@ -28,8 +28,13 @@ public class AnswerServiceImp implements AnswerService{
 	}
 
 	@Override
-	public Collection<Answer> getAnswerByQuestionId(long id) {
+	public Collection<Answer> getAnswerByQuestionID(long id) {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<Answer> getAnswerByExamID(String id) {
 		return null;
 	}
 
