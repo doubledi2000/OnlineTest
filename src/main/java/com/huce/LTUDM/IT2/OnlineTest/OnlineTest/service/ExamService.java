@@ -12,8 +12,9 @@ public interface ExamService {
 
     public abstract void deleteExam(String id);
 
-    public abstract Collection<Answer> getAnswerByProfessorID(String id);
+    public abstract Collection<Exam> getExamByProfessorID(String id);
 
     public abstract Collection<Exam> getAll();
 
+    public abstract Exam getExamByID(String id);
 }

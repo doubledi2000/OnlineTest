@@ -16,4 +16,6 @@ public interface TestService {
 
     public abstract Collection<Test> getTestByStudentID(String id);
 
+    public abstract Test getTestByTestID(long id);
+
 }

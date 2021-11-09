@@ -27,7 +27,7 @@ public class QuestionssTest implements Serializable {
     private String image;
     private int result;
     @Column(name = "question_id")
-    private int questionId;
+    private long questionId;
 
     @ManyToOne
     @JoinColumn(name = "test_id")
@@ -76,11 +76,11 @@ public class QuestionssTest implements Serializable {
         this.result = result;
     }
 
-    public int getQuestionId() {
+    public long getQuestionId() {
         return questionId;
     }
 
-    public void setQuestionId(int questionId) {
+    public void setQuestionId(long questionId) {
         this.questionId = questionId;
     }
 

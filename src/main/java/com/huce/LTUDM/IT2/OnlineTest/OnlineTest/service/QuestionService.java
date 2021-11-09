@@ -13,4 +13,5 @@ public interface QuestionService {
     public abstract void deleteQuestion(long id);
 
     public abstract Collection<Question> getQuestionByExamID(String id);
+
 }
