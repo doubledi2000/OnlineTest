@@ -4,6 +4,7 @@ import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.entity.Answer;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.entity.StudentssAnswer;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface StudentssAnswerService {
     public abstract void createStudentssAnswer(StudentssAnswer answer);
@@ -14,4 +15,5 @@ public interface StudentssAnswerService {
 
     public abstract Collection<StudentssAnswer> getStudentssAnswerByQuestionID(long id);
 
+    public abstract void summitTest(long id, Collection<StudentssAnswer> answers);
 }

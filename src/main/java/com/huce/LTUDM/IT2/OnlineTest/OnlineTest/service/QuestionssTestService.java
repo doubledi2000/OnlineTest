@@ -14,4 +14,6 @@ public interface QuestionssTestService {
 
     public abstract Collection<QuestionssTest> getQuestionByTestID(long id);
 
+    public abstract QuestionssTest getQuestionssTestByQuestionID(long id);
+
 }

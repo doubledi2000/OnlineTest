@@ -1,16 +1,11 @@
 package com.huce.LTUDM.IT2.OnlineTest.OnlineTest.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "test")
@@ -20,25 +15,53 @@ public class Test implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(name = "title",nullable = false, length = 255)
     private String title;
-    @Column(name = "start_time")
+
+    @Column(name = "start_time", nullable = false)
     private Date startTime;
-    @Column(name = "submittion_time")
+
+    @Column(name = "real_time")
+    private Date realTime;
+
+    @Column(name = "submittion_time", nullable = false)
     private Date submittionTime;
-    @Column(name = "number_of_question")
+
+    @Column(name = "number_of_question", nullable = false)
     private int noq;
-    @Column(name = "correct_answers")
+    @Column(name = "correct_answers", nullable = false)
     private int correctAnswer;
+    @Column(name = "score")
     private double score;
     private int status;
+    private int time;
 
     @ManyToOne
     @JoinColumn(name = "student_code")
+    @Enumerated(EnumType.STRING)
     private Student student;
 
     @ManyToOne
     @JoinColumn(name = "exam_code")
+    @Enumerated(EnumType.STRING)
+    @JsonIgnore
     private Exam exam;
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    public Date getRealTime() {
+        return realTime;
+    }
+
+    public void setRealTime(Date realTime) {
+        this.realTime = realTime;
+    }
 
     public long getId() {
         return id;

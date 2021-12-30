@@ -34,4 +34,9 @@ public class QuestionssTestServiceImp implements QuestionssTestService {
     public Collection<QuestionssTest> getQuestionByTestID(long id) {
         return repo.getQuestionssTestByExamID(id);
     }
+
+    @Override
+    public QuestionssTest getQuestionssTestByQuestionID(long id) {
+        return null;
+    }
 }

@@ -10,6 +10,4 @@ import java.util.List;
 
 public interface StudentRepository extends CrudRepository<Student, String> {
 
-    @Query("SELECT com.huce.LTUDM.IT2.ONlineTest.OnlineTest.entity.Student(e.tests.student) FROM Exam e where e.examCode = :examCode")
-    public List<Student> getStudentsInExam(@Param("examCode") String id);
 }

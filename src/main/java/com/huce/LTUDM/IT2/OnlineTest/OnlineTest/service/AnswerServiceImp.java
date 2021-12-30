@@ -39,9 +39,4 @@ public class AnswerServiceImp implements AnswerService {
         return repo.getAnswerByQuestionID(id);
     }
 
-    @Override
-    public Collection<Answer> getAnswerByExamID(String id) {
-        return repo.getAnswerByExamID(id);
-    }
-
 }

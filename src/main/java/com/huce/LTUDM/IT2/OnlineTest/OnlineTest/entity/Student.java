@@ -1,14 +1,13 @@
 package com.huce.LTUDM.IT2.OnlineTest.OnlineTest.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "student")
@@ -16,7 +15,7 @@ public class Student implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "student_code")
+    @Column(name = "student_code", length = 15)
     private String studentCode;
 
     private String fullname;
@@ -28,14 +27,15 @@ public class Student implements Serializable {
     private String password;
     private String role;
 
-    @OneToMany(mappedBy = "student")
-    private List<Test> test;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "student")
+    @JsonIgnore
+    private Collection<Test> test;
 
-    public List<Test> getTest() {
+    public Collection<Test> getTest() {
         return test;
     }
 
-    public void setTest(List<Test> test) {
+    public void setTest(Collection<Test> test) {
         this.test = test;
     }
 

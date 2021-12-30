@@ -16,7 +16,7 @@ public class Professor implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "professor_code")
+    @Column(name = "professor_code", length = 15)
     private String professorCode;
     private String fullname;
     private Date dob;

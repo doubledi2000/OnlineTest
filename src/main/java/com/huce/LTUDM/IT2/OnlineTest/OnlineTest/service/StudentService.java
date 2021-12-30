@@ -14,6 +14,6 @@ public interface StudentService {
 
     public abstract Collection<Student> getAll();
 
-    public abstract Collection<Student> getStudentInExam(String examCode);
+    public abstract Student getStudentById(String id);
 }
 

@@ -1,7 +1,9 @@
 package com.huce.LTUDM.IT2.OnlineTest.OnlineTest.service;
 
 
+import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.entity.QuestionssTest;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.entity.StudentssAnswer;
+import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.repository.QuestionssTestRepository;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.repository.StudentssAnswerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,8 @@ public class StudentssAnswerServiceImp implements StudentssAnswerService {
 
     @Autowired
     private StudentssAnswerRepository repo;
+    @Autowired
+    QuestionssTestRepository questionssTestRepository;
 
     @Override
     public void createStudentssAnswer(StudentssAnswer answer) {
@@ -33,5 +37,13 @@ public class StudentssAnswerServiceImp implements StudentssAnswerService {
     @Override
     public Collection<StudentssAnswer> getStudentssAnswerByQuestionID(long id) {
         return repo.getStudentssAnswerByQuestionID(id);
+    }
+
+    @Override
+    public void summitTest(long id, Collection<StudentssAnswer> answers) {
+        for (StudentssAnswer answer: answers){
+            answer.setQuestion(questionssTestRepository.findById(id).get());
+            repo.save(answer);
+        }
     }
 }

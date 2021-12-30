@@ -1,5 +1,7 @@
 package com.huce.LTUDM.IT2.OnlineTest.OnlineTest.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -28,6 +30,7 @@ public class StudentssAnswer implements Serializable {
     private int choose;
     @ManyToOne
     @JoinColumn(name = "question_id")
+    @JsonIgnore
     private QuestionssTest question;
 
     public long getId() {

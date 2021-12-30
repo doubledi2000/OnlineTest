@@ -35,7 +35,8 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
-    public Collection<Student> getStudentInExam(String examCode) {
-        return repo.getStudentsInExam(examCode);
+    public Student getStudentById(String id) {
+        return repo.findById(id).orElseThrow();
     }
+
 }

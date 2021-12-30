@@ -19,7 +19,7 @@ public class Exam implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "exam_code")
+    @Column(name = "exam_code", length = 15)
     private String examCode;
     private String title;
     @Column(name = "start")
@@ -27,6 +27,7 @@ public class Exam implements Serializable {
     @Column(name = "final")
     private Date finalTime;
     private int status;
+    private int time;
 
     @ManyToOne
     @JoinColumn(name = "professor")
@@ -37,6 +38,22 @@ public class Exam implements Serializable {
 
     @OneToMany(mappedBy = "exam")
     private List<Test> tests;
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    public List<Question> getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(List<Question> question) {
+        this.question = question;
+    }
 
     public String getExamCode() {
         return examCode;

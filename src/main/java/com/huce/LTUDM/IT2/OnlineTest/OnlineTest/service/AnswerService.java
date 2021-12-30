@@ -13,6 +13,4 @@ public interface AnswerService {
 
 	public abstract Collection<Answer> getAnswerByQuestionID(long id);
 
-	public abstract Collection<Answer> getAnswerByExamID(String id);
-
 }

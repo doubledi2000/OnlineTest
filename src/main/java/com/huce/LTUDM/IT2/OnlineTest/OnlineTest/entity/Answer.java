@@ -21,7 +21,7 @@ public class Answer implements Serializable {
     private long id;
     private String content;
     @Column(name = "true_false")
-    private int TF;
+    private boolean TF;
 
     @ManyToOne
     @JoinColumn(name = "question_id")
@@ -43,11 +43,11 @@ public class Answer implements Serializable {
         this.content = content;
     }
 
-    public int getTF() {
+    public boolean getTF() {
         return TF;
     }
 
-    public void setTF(int tF) {
+    public void setTF(boolean tF) {
         TF = tF;
     }
 

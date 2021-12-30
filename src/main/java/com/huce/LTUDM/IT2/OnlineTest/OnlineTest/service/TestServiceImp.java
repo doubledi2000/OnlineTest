@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class TestServiceImp implements TestService {
@@ -36,12 +38,27 @@ public class TestServiceImp implements TestService {
 
     @Override
     public Collection<Test> getTestByStudentID(String id) {
-        return repo.getTestByStudentID(id);
+        Collection<Test> tests = repo.getTestByStudentID(id);
+        for(Test t : tests){
+            t.setRealTime(new Date());
+        }
+        return tests;
     }
 
     @Override
     public Test getTestByTestID(long id) {
-        return repo.findById(id).get();
+        Test test =repo.findById(id).get();
+        test.setRealTime(new Date());
+        return test;
+    }
+
+    @Override
+    public List<Test> getTestByStudentIDandStatus(String id, int stt) {
+        List<Test> tests = repo.getTestByStudentIDandStatus(id, stt);
+        for(Test t : tests){
+            t.setRealTime(new Date());
+        }
+        return tests;
     }
 
 

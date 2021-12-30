@@ -13,7 +13,5 @@ public interface AnswerRepository extends CrudRepository<Answer, Long> {
     @Query("SELECT a FROM Answer a WHERE a.question.id = :id")
     public Collection<Answer> getAnswerByQuestionID(@Param("id") long id);
 
-    @Query("SELECT a FROM Answer a WHERE a.exam.examCode = :examCode")
-    public Collection<Answer> getAnswerByExamID(@Param("examCode") String examCode);
 
 }

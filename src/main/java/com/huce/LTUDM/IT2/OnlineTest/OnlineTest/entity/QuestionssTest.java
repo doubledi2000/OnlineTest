@@ -1,5 +1,7 @@
 package com.huce.LTUDM.IT2.OnlineTest.OnlineTest.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class QuestionssTest implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "test_id")
+    @JsonIgnore
     private Test test;
 
     @OneToMany(mappedBy = "question")
