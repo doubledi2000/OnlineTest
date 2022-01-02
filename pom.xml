@@ -52,9 +52,7 @@
 <!--			<groupId>org.springframework.boot</groupId>-->
 <!--			<artifactId>spring-boot-starter-security</artifactId>-->
 <!--		</dependency>-->
-		<!-- https://mvnrepository.com/artifact/com.google.api-client/google-api-client -->
-		<!-- https://mvnrepository.com/artifact/com.google.oauth-client/google-oauth-client-jetty -->
-		<!-- https://mvnrepository.com/artifact/com.google.cloud.sql/mysql-socket-factory -->
+
 		<dependency>
 			<groupId>com.google.cloud.sql</groupId>
 			<artifactId>mysql-socket-factory</artifactId>
