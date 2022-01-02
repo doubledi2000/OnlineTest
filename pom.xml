@@ -58,6 +58,18 @@
 			<artifactId>mysql-socket-factory</artifactId>
 			<version>1.4.1</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-gcp-starter -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-gcp-starter</artifactId>
+			<version>1.2.8.RELEASE</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.cloud.tools/jib-maven-plugin -->
+		<dependency>
+			<groupId>com.google.cloud.tools</groupId>
+			<artifactId>jib-maven-plugin</artifactId>
+			<version>3.1.4</version>
+		</dependency>
 
 	</dependencies>
 
