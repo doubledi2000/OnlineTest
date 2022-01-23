@@ -1,6 +1,7 @@
 package com.huce.LTUDM.IT2.OnlineTest.OnlineTest.service;
 
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.entity.Answer;
+import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.entity.QuestionssTest;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.entity.Test;
 
 import java.util.Collection;
@@ -19,6 +20,8 @@ public interface TestService {
 
     public abstract Test getTestByTestID(long id);
 
-    public abstract List<Test> getTestByStudentIDandStatus(String id, int stt);
+    public abstract List<Test> getTestByStudentIDandStatus(String id, String stt);
+
+    public abstract void generateQuestion(long id);
 
 }

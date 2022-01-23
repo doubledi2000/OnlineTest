@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -24,8 +25,8 @@ public class Test implements Serializable {
     @Column(name = "real_time")
     private Date realTime;
 
-    @Column(name = "submittion_time", nullable = false)
-    private Date submittionTime;
+    @Column(name = "submition_time", nullable = false)
+    private Date submissionTime;
 
     @Column(name = "number_of_question", nullable = false)
     private int noq;
@@ -33,7 +34,7 @@ public class Test implements Serializable {
     private int correctAnswer;
     @Column(name = "score")
     private double score;
-    private int status;
+    private String status;
     private int time;
 
     @ManyToOne
@@ -46,6 +47,26 @@ public class Test implements Serializable {
     @Enumerated(EnumType.STRING)
     @JsonIgnore
     private Exam exam;
+
+    @OneToMany(mappedBy = "test")
+    @JsonIgnore
+    private List<QuestionssTest> questionss;
+
+    public Date getSubmissionTime() {
+        return submissionTime;
+    }
+
+    public void setSubmissionTime(Date submissionTime) {
+        this.submissionTime = submissionTime;
+    }
+
+    public List<QuestionssTest> getQuestionss() {
+        return questionss;
+    }
+
+    public void setQuestionss(List<QuestionssTest> questionss) {
+        this.questionss = questionss;
+    }
 
     public int getTime() {
         return time;
@@ -88,11 +109,11 @@ public class Test implements Serializable {
     }
 
     public Date getSubmittionTime() {
-        return submittionTime;
+        return submissionTime;
     }
 
-    public void setSubmittionTime(Date submittionTime) {
-        this.submittionTime = submittionTime;
+    public void setSubmittionTime(Date submissionTime) {
+        this.submissionTime = submissionTime;
     }
 
     public int getNoq() {
@@ -119,11 +140,11 @@ public class Test implements Serializable {
         this.score = score;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

@@ -26,7 +26,7 @@ public class Exam implements Serializable {
     private Date startTime;
     @Column(name = "final")
     private Date finalTime;
-    private int status;
+    private String status;
     private int time;
 
     @ManyToOne
@@ -87,11 +87,11 @@ public class Exam implements Serializable {
         this.finalTime = finalTime;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

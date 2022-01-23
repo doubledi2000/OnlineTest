@@ -28,4 +28,16 @@ public class StudentController {
         Collection<Student> list = studentService.getAll();
         return new ResponseEntity<Collection<Student>>(list, HttpStatus.FOUND);
     }
+    @PostMapping("/create")
+    public void createStudent(@RequestBody Student student){
+        studentService.crateStudent(student);
+    }
+    @PatchMapping("/edit")
+    public void editStudentProfile(@RequestBody Student newInfo){
+        Student oldInfo = studentService.getStudentById("0301");
+        newInfo.setStudentCode("0301");
+        newInfo.setUsername(oldInfo.getUsername());
+        newInfo.setRole(oldInfo.getRole());
+        studentService.updateStudent("0101", newInfo);
+    }
 }

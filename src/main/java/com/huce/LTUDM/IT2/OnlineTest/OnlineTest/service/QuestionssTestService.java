@@ -4,6 +4,7 @@ import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.entity.Answer;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.entity.QuestionssTest;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface QuestionssTestService {
     public abstract void createQuestionssTest(QuestionssTest questionssTest);
@@ -12,8 +13,7 @@ public interface QuestionssTestService {
 
     public abstract void deleteQuestionssTest(long id);
 
-    public abstract Collection<QuestionssTest> getQuestionByTestID(long id);
+    public abstract List<QuestionssTest> getQuestionByTestID(long id);
 
     public abstract QuestionssTest getQuestionssTestByQuestionID(long id);
-
 }

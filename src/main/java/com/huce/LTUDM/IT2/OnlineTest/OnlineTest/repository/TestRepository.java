@@ -18,7 +18,7 @@ public interface TestRepository extends CrudRepository<Test, Long>, Const {
     public List<Test> getTestByStudentID(@Param("id") String id);
 
     @Query("SELECT t FROM Test t where t.student.studentCode = :id and t.status = :status order by t.startTime")
-    public List<Test> getTestByStudentIDandStatus(@Param("id") String id, @Param("status") int status );
+    public List<Test> getTestByStudentIDandStatus(@Param("id") String id, @Param("status") String status );
 
 
 }

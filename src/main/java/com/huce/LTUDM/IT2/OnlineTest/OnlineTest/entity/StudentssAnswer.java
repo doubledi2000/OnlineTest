@@ -24,10 +24,10 @@ public class StudentssAnswer implements Serializable {
     private long id;
 
     private String content;
-    @Column(name = "true_false")
-    private int TF;
+    @JsonIgnore
+    private boolean true_false;
     @Column(name = "your_choose")
-    private int choose;
+    private boolean choose;
     @ManyToOne
     @JoinColumn(name = "question_id")
     @JsonIgnore
@@ -49,12 +49,16 @@ public class StudentssAnswer implements Serializable {
         this.content = content;
     }
 
-    public int getTF() {
-        return TF;
+    public boolean isTrue_false() {
+        return true_false;
     }
 
-    public void setTF(int tF) {
-        TF = tF;
+    public void setTrue_false(boolean true_false) {
+        this.true_false = true_false;
+    }
+
+    public boolean isChoose() {
+        return choose;
     }
 
     public QuestionssTest getQuestion() {
@@ -65,11 +69,11 @@ public class StudentssAnswer implements Serializable {
         this.question = question;
     }
 
-    public int getChoose() {
+    public boolean getChoose() {
         return choose;
     }
 
-    public void setChoose(int choose) {
+    public void setChoose(boolean choose) {
         this.choose = choose;
     }
 

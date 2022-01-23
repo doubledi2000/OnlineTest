@@ -23,7 +23,7 @@ public class Question implements Serializable {
     private long id;
     private String title;
     private String image;
-    private String type;
+    private int type;
 
     @OneToMany(mappedBy = "question")
     private List<Answer> answers;
@@ -56,11 +56,11 @@ public class Question implements Serializable {
         this.image = image;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 

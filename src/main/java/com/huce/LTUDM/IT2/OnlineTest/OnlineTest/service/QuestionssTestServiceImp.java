@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 public class QuestionssTestServiceImp implements QuestionssTestService {
@@ -31,7 +32,7 @@ public class QuestionssTestServiceImp implements QuestionssTestService {
     }
 
     @Override
-    public Collection<QuestionssTest> getQuestionByTestID(long id) {
+    public List<QuestionssTest> getQuestionByTestID(long id) {
         return repo.getQuestionssTestByExamID(id);
     }
 

@@ -27,6 +27,7 @@ public class QuestionssTest implements Serializable {
     private String title;
     private int type;
     private String image;
+    @JsonIgnore
     private int result;
     @Column(name = "question_id")
     private long questionId;
