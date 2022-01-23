@@ -56,10 +56,12 @@ public class TestController implements Const {
     //join test
     @PostMapping("/join/{id}")
     public void joinTest(@RequestHeader MultiValueMap<String, String> headers, @PathVariable("id") String id){
-        headers.getFirst("username");
+        //headers.getFirst("username");
         Exam exam = examService.getExamByID(id);
         Test test = new Test();
-        if(exam.getStatus() == EXAM_STT_APPROVED) {
+        System.out.println("Hi");
+        System.out.println(exam.getStatus());
+        if(exam.getStatus().equals(EXAM_STT_APPROVED)) {
             test.setTitle(exam.getTitle());
             test.setStatus(TEST_STT_WAITING);
             test.setStartTime(exam.getStartTime());
@@ -71,10 +73,10 @@ public class TestController implements Const {
             test.setStudent(studentService.getStudentById("030120"));
             test.setExam(exam);
             test.setTime(90);
+            System.out.println("create test");
             testService.createTest(test);
             testService.generateQuestion(test.getId());
         }
-
     }
     @GetMapping("take-a-test/{id}")
     public ResponseEntity<?> takeATest(@PathVariable("id") long id) {
