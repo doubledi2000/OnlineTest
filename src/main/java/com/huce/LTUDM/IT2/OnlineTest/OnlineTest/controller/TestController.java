@@ -1,8 +1,10 @@
 package com.huce.LTUDM.IT2.OnlineTest.OnlineTest.controller;
 
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.common.Const;
+import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.common.ResponseMessage;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.entity.*;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.service.*;
+import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,8 @@ public class TestController implements Const {
     QuestionssTestService questionssTestService;
     @Autowired
     QuestionService questionService;
+    @Autowired
+    private JwtUtil jwtTokenUtil;
 
     //get Test
     @GetMapping("/{id}")
@@ -37,15 +41,24 @@ public class TestController implements Const {
 
     //submit Test
     @PutMapping("submit/{id}")
-    public ResponseEntity<?> submitTest(@PathVariable long id, @RequestBody Collection<StudentssAnswer> answers){
+    public ResponseEntity<?> submitTest(@RequestHeader Map<String, Object> headers,@PathVariable long id, @RequestBody Collection<StudentssAnswer> answers){
+        String jwt = headers.get(AUTH).toString().substring(7);
+        Student student = jwtTokenUtil.getStudentFromToken(jwt);
+        Test test = testService.getTestByTestID(id);
+        if(!test.getStudent().getStudentCode().equals(student.getStudentCode())) {
+            return new ResponseEntity<>(new ResponseMessage(1, "cannot submit"), HttpStatus.FORBIDDEN);
+        }
         studentssAnswerService.summitTest(1l, answers);
         return new ResponseEntity<>(testService.getTestByTestID(1l), HttpStatus.OK);
     }
 
     //get test by studentID and status of test
-    @GetMapping("/{id}/{status}")
-    public List<Test> getTestsByStatus(@PathVariable("id") String studentID, @PathVariable("status") String status){
-        List<Test> tests = testService.getTestByStudentIDandStatus(studentID,status);
+    @GetMapping("/get/{status}")
+    public List<Test> getTestsByStatus(@RequestHeader Map<String, Object> headers,@PathVariable("status") String status){
+
+        String jwt = headers.get(AUTH).toString().substring(7);
+        Student student = jwtTokenUtil.getStudentFromToken(jwt);
+        List<Test> tests = testService.getTestByStudentIDandStatus(student.getStudentCode(), status);
         for (Test t : tests) {
             t.setRealTime(new Date());
         }
@@ -53,34 +66,17 @@ public class TestController implements Const {
 //        return (List<Test>) new ResponseEntity<List<Test>>(testService.getTestByStudentIDandStatus(studentID, status),HttpStatus.OK);
     }
 
-    //join test
-    @PostMapping("/join/{id}")
-    public void joinTest(@RequestHeader MultiValueMap<String, String> headers, @PathVariable("id") String id){
-        //headers.getFirst("username");
-        Exam exam = examService.getExamByID(id);
-        Test test = new Test();
-        System.out.println("Hi");
-        System.out.println(exam.getStatus());
-        if(exam.getStatus().equals(EXAM_STT_APPROVED)) {
-            test.setTitle(exam.getTitle());
-            test.setStatus(TEST_STT_WAITING);
-            test.setStartTime(exam.getStartTime());
-            test.setRealTime(new Date());
-            test.setSubmittionTime(new Date());
-            test.setNoq(exam.getQuestionList().size());
-            test.setCorrectAnswer(0);
-            test.setScore(0);
-            test.setStudent(studentService.getStudentById("030120"));
-            test.setExam(exam);
-            test.setTime(90);
-            System.out.println("create test");
-            testService.createTest(test);
-            testService.generateQuestion(test.getId());
-        }
-    }
+
     @GetMapping("take-a-test/{id}")
-    public ResponseEntity<?> takeATest(@PathVariable("id") long id) {
+    public ResponseEntity<?> takeATest(@RequestHeader Map<String, Object> headers,@PathVariable("id") long id) {
+        String jwt = headers.get(AUTH).toString().substring(7);
+        Student student = jwtTokenUtil.getStudentFromToken(jwt);
+        Test test = testService.getTestByTestID(id);
+        if(!test.getStudent().getStudentCode().equals(student.getStudentCode())) {
+            return new ResponseEntity<>(new ResponseMessage(1,"cannot take a test"), HttpStatus.FORBIDDEN);
+        }
         List<QuestionssTest> ques = questionssTestService.getQuestionByTestID(1);
+
         return new ResponseEntity<>(ques,HttpStatus.OK);
     }
 }

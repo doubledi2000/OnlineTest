@@ -39,4 +39,10 @@ public class StudentServiceImp implements StudentService {
         return repo.findById(id).get();
     }
 
+    @Override
+    public Student getStudentByUsername(String username) {
+        return repo.getStudentByUsername(username);
+    }
+
+
 }
