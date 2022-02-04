@@ -57,15 +57,18 @@ public class TestController implements Const {
     //get test by studentID and status of test
     @CrossOrigin
     @GetMapping("/get/{status}")
-    public List<Test> getTestsByStatus(@RequestHeader Map<String, Object> headers,@PathVariable("status") String status){
-
-        String jwt = headers.get(AUTH).toString().substring(7);
-        Student student = jwtTokenUtil.getStudentFromToken(jwt);
-        List<Test> tests = testService.getTestByStudentIDandStatus(student.getStudentCode(), status);
-        for (Test t : tests) {
-            t.setRealTime(new Date());
+    public ResponseEntity<?> getTestsByStatus(@RequestHeader Map<String, Object> headers,@PathVariable("status") String status){
+        try {
+            String jwt = headers.get(AUTH).toString().substring(7);
+            Student student = jwtTokenUtil.getStudentFromToken(jwt);
+            List<Test> tests = testService.getTestByStudentIDandStatus(student.getStudentCode(), status);
+            for (Test t : tests) {
+                t.setRealTime(new Date());
+            }
+            return new ResponseEntity<>(tests, HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.FORBIDDEN);
         }
-        return tests;
 //        return (List<Test>) new ResponseEntity<List<Test>>(testService.getTestByStudentIDandStatus(studentID, status),HttpStatus.OK);
     }
 

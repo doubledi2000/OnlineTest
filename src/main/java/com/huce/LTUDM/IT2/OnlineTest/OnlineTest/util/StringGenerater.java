@@ -1,4 +1,4 @@
-package com.huce.LTUDM.IT2.OnlineTest.OnlineTest.config;
+package com.huce.LTUDM.IT2.OnlineTest.OnlineTest.util;
 
 public class StringGenerater {
     public static String generateString(int n) {
@@ -10,7 +10,7 @@ public class StringGenerater {
 
         for (int i = 0; i < n; i++) {
             int index
-                    = (int)(AlphaNumericString.length()
+                    = (int) (AlphaNumericString.length()
                     * Math.random());
             sb.append(AlphaNumericString
                     .charAt(index));
