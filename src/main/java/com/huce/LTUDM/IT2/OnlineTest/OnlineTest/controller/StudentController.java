@@ -41,25 +41,34 @@ public class StudentController implements Const {
     @Autowired
     private JwtUtil jwtTokenUtil;
 
+    @CrossOrigin
     @GetMapping("/detail/{id}")
-    public Student getInfo(@PathVariable String id){
+    public ResponseEntity<?> getInfo(@PathVariable String id){
         Student student = studentService.getStudentById(id);
-        return student;
+        return new ResponseEntity<>(student,HttpStatus.FOUND);
     }
+    @CrossOrigin
     @GetMapping("my-profile")
-    public Student getMyProfile(@RequestHeader Map<String, Object> headers) {
-        String jwt = headers.get(AUTH).toString().substring(7);
-        return jwtTokenUtil.getStudentFromToken(jwt);
+    public ResponseEntity<?> getMyProfile(@RequestHeader Map<String, Object> headers) {
+        try {
+            String jwt = headers.get(AUTH).toString().substring(7);
+            return new ResponseEntity<>(jwtTokenUtil.getStudentFromToken(jwt), HttpStatus.FOUND);
+        }catch (Exception e ) {
+            return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.valueOf(501));
+        }
     }
+    @CrossOrigin
     @GetMapping("/all")
     public  ResponseEntity<Collection<Student>> getAll(){
         Collection<Student> list = studentService.getAll();
         return new ResponseEntity<Collection<Student>>(list, HttpStatus.FOUND);
     }
+    @CrossOrigin
     @PostMapping("/create")
     public void createStudent(@RequestBody Student student){
         studentService.crateStudent(student);
     }
+    @CrossOrigin
     @PatchMapping("/edit")
     public void editStudentProfile(@RequestBody Student newInfo){
         Student oldInfo = studentService.getStudentById("0301");
@@ -68,6 +77,7 @@ public class StudentController implements Const {
         newInfo.setRole(oldInfo.getRole());
         studentService.updateStudent("0101", newInfo);
     }
+    @CrossOrigin
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 
@@ -85,6 +95,12 @@ public class StudentController implements Const {
         }
 
     }
+    @CrossOrigin
+    @GetMapping("/login")
+    public String getLogin() {
+        return "Login to system";
+    }
+    @CrossOrigin
     @PostMapping("sign-up")
     public ResponseEntity<?> signup(@RequestBody Student student) throws Exception {
         try {

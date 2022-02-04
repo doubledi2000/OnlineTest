@@ -1,6 +1,8 @@
 package com.huce.LTUDM.IT2.OnlineTest.OnlineTest.util;
 
+import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.entity.Professor;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.entity.Student;
+import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.service.ProfessorService;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.service.StudentService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -20,6 +22,8 @@ public class JwtUtil {
 
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private ProfessorService professorService;
 
     private String SECRET_KEY = "secret";
 
@@ -63,5 +67,10 @@ public class JwtUtil {
     public Student getStudentFromToken(String jwt) {
         String username = extractUsername(jwt);
         return studentService.getStudentByUsername(username);
+    }
+
+    public Professor getProfessorFromToken(String jwt) {
+        String username = extractUsername(jwt);
+        return professorService.getProfessorByID(username);
     }
 }

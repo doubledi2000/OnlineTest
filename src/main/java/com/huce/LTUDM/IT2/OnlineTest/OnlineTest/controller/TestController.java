@@ -34,12 +34,14 @@ public class TestController implements Const {
     private JwtUtil jwtTokenUtil;
 
     //get Test
+    @CrossOrigin
     @GetMapping("/{id}")
     public Test getTest(@PathVariable long id){
         return testService.getTestByTestID(id);
     }
 
     //submit Test
+    @CrossOrigin
     @PutMapping("submit/{id}")
     public ResponseEntity<?> submitTest(@RequestHeader Map<String, Object> headers,@PathVariable long id, @RequestBody Collection<StudentssAnswer> answers){
         String jwt = headers.get(AUTH).toString().substring(7);
@@ -53,6 +55,7 @@ public class TestController implements Const {
     }
 
     //get test by studentID and status of test
+    @CrossOrigin
     @GetMapping("/get/{status}")
     public List<Test> getTestsByStatus(@RequestHeader Map<String, Object> headers,@PathVariable("status") String status){
 
@@ -66,7 +69,7 @@ public class TestController implements Const {
 //        return (List<Test>) new ResponseEntity<List<Test>>(testService.getTestByStudentIDandStatus(studentID, status),HttpStatus.OK);
     }
 
-
+    @CrossOrigin
     @GetMapping("take-a-test/{id}")
     public ResponseEntity<?> takeATest(@RequestHeader Map<String, Object> headers,@PathVariable("id") long id) {
         String jwt = headers.get(AUTH).toString().substring(7);
