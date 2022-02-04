@@ -45,14 +45,14 @@ public class StudentController implements Const {
     @GetMapping("/detail/{id}")
     public ResponseEntity<?> getInfo(@PathVariable String id){
         Student student = studentService.getStudentById(id);
-        return new ResponseEntity<>(student,HttpStatus.FOUND);
+        return new ResponseEntity<>(student,HttpStatus.OK);
     }
     @CrossOrigin
     @GetMapping("my-profile")
     public ResponseEntity<?> getMyProfile(@RequestHeader Map<String, Object> headers) {
         try {
             String jwt = headers.get(AUTH).toString().substring(7);
-            return new ResponseEntity<>(jwtTokenUtil.getStudentFromToken(jwt), HttpStatus.FOUND);
+            return new ResponseEntity<>(jwtTokenUtil.getStudentFromToken(jwt), HttpStatus.OK);
         }catch (Exception e ) {
             return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.valueOf(501));
         }
@@ -61,7 +61,7 @@ public class StudentController implements Const {
     @GetMapping("/all")
     public  ResponseEntity<Collection<Student>> getAll(){
         Collection<Student> list = studentService.getAll();
-        return new ResponseEntity<Collection<Student>>(list, HttpStatus.FOUND);
+        return new ResponseEntity<Collection<Student>>(list, HttpStatus.OK);
     }
     @CrossOrigin
     @PostMapping("/create")
@@ -89,7 +89,7 @@ public class StudentController implements Const {
             final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
             final String jwt = jwtTokenUtil.generateToken(userDetails);
-            return new ResponseEntity<>(new AuthenticationResponse(0,jwt), HttpStatus.FOUND);
+            return new ResponseEntity<>(new AuthenticationResponse(0,jwt), HttpStatus.OK);
         }catch (BadCredentialsException e) {
             return new ResponseEntity<>(new AuthenticationResponse(1, null), HttpStatus.UNAUTHORIZED);
         }
