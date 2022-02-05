@@ -40,6 +40,7 @@ public class Test implements Serializable {
     @ManyToOne
     @JoinColumn(name = "student_code")
     @Enumerated(EnumType.STRING)
+    @JsonIgnore
     private Student student;
 
     @ManyToOne

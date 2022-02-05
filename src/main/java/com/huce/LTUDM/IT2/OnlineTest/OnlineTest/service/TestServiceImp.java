@@ -101,5 +101,10 @@ public class TestServiceImp implements TestService {
         }
     }
 
+    @Override
+    public List<Test> getOwnTest(String id) {
+        return repo.getTestByStudentID(id);
+    }
+
 
 }

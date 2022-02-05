@@ -85,4 +85,17 @@ public class TestController implements Const {
 
         return new ResponseEntity<>(ques,HttpStatus.OK);
     }
+
+    @CrossOrigin
+    @GetMapping("/get/own")
+    public ResponseEntity<?> getOwnTest(@RequestHeader Map<String, Object> headers) {
+        try {
+            String jwt = headers.get(AUTH).toString().substring(7);
+            Student student = jwtTokenUtil.getStudentFromToken(jwt);
+            List<Test> tests = testService.getOwnTest(student.getStudentCode());
+            return new ResponseEntity<>(tests, HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.FORBIDDEN);
+        }
+    }
 }

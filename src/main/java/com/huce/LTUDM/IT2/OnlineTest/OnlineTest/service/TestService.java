@@ -23,5 +23,6 @@ public interface TestService {
     public abstract List<Test> getTestByStudentIDandStatus(String id,String stt);
 
     public abstract void generateQuestion(long id);
+    public abstract List<Test> getOwnTest(String id);
 
 }
