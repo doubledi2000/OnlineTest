@@ -63,7 +63,7 @@ public class TestController implements Const {
             Student student = jwtTokenUtil.getStudentFromToken(jwt);
             List<Test> tests = testService.getTestByStudentIDandStatus(student.getStudentCode(), status);
             for (Test t : tests) {
-                t.setRealTime(new Date());
+                t.setRealTime(new Date(System.currentTimeMillis() + 7 * 60 * 60 * 1000));
             }
             return new ResponseEntity<>(tests, HttpStatus.OK);
         }catch (Exception e) {
@@ -93,6 +93,9 @@ public class TestController implements Const {
             String jwt = headers.get(AUTH).toString().substring(7);
             Student student = jwtTokenUtil.getStudentFromToken(jwt);
             List<Test> tests = testService.getOwnTest(student.getStudentCode());
+            for (Test t : tests) {
+                t.setRealTime(new Date( System.currentTimeMillis() + 7 * 60 * 60 * 1000));
+            }
             return new ResponseEntity<>(tests, HttpStatus.OK);
         }catch (Exception e) {
             return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.FORBIDDEN);

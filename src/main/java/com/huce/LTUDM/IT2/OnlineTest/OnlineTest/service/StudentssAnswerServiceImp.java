@@ -57,7 +57,7 @@ public class StudentssAnswerServiceImp implements StudentssAnswerService, Const 
             repo.save(answer);
         }
         Test test = testRepository.findById(id).get();
-        test.setSubmittionTime(new Date());
+        test.setSubmittionTime(new Date(System.currentTimeMillis() + 7 * 60 * 60 * 1000));
         List<QuestionssTest> questionssTests = test.getQuestionss();
         int correctAnswer = 0;
         for (QuestionssTest qus : questionssTests){
