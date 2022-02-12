@@ -12,4 +12,8 @@ public interface Const {
     public final String TEST_STT_GOING_ON = "going_on";
     public final String TEST_STT_TOOK_PLACE = "took_place";
 
+    public final String EXAM_JOIN_STT_NOT_YET = "not_yet";
+    public final String EXAM_JOIN_STT_PENDING = "pending";
+    public final String EXAM_JOIN_STT_JOINED = "joined";
+
 }

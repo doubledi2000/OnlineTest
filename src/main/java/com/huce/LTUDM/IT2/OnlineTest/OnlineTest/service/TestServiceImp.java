@@ -1,16 +1,18 @@
 package com.huce.LTUDM.IT2.OnlineTest.OnlineTest.service;
 
+import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.common.Const;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.entity.*;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.repository.QuestionssTestRepository;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.repository.StudentssAnswerRepository;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.repository.TestRepository;
+import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.sub.entity.SubTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
-public class TestServiceImp implements TestService {
+public class TestServiceImp implements TestService, Const {
 
     @Autowired
     private TestRepository repo;
@@ -104,6 +106,57 @@ public class TestServiceImp implements TestService {
     @Override
     public List<Test> getOwnTest(String id) {
         return repo.getTestByStudentID(id);
+    }
+
+    @Override
+    public Test getOwnTestByExamCode(String id, String examCode) {
+        return repo.getTestByStudentIDAndExamID(id, examCode);
+    }
+
+    @Override
+    public List<SubTest> getOwnTestByStatus(String id, String status) {
+        List<SubTest> tests = new ArrayList<>();
+        List<Test> mainTest = repo.getTestByStudentIDandStatus(id, status);
+        switch (status) {
+            case TEST_STT_WAITING:
+                for (Test t: mainTest){
+                    SubTest s = new SubTest();
+                    s.setId(t.getId());
+                    s.setProfessor(t.getProfessor());
+                    s.setTime(t.getTime());
+                    s.setStart_time(t.getStartTime());
+                    s.setRealTime(new Date());
+                    s.setStatus(t.getStatus());
+                    s.setExamCode(t.getExam().getExamCode());
+                    s.setTitle(t.getTitle());
+                    tests.add(s);
+                }
+                break;
+            case TEST_STT_TOOK_PLACE:
+                for (Test t: mainTest){
+                    SubTest s = new SubTest();
+                    s.setId(t.getId());
+                    s.setProfessor(t.getProfessor());
+                    s.setTime(t.getTime());
+                    s.setNoq(t.getNoq());
+                    s.setCorrect_answers(t.getCorrectAnswer());
+                    s.setScore(t.getScore());
+                    s.setSubmissionTime(t.getSubmissionTime());
+                    s.setExamCode(t.getExam().getExamCode());
+                    s.setTitle(t.getTitle());
+                    s.setStatus(t.getStatus());
+                    tests.add(s);
+                }
+                break;
+
+            case TEST_STT_PENDING:
+                break;
+
+            default:
+                tests = null;
+                break;
+        }
+        return tests;
     }
 
 

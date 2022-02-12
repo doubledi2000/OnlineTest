@@ -23,4 +23,5 @@ public class MyUserDetailsService implements UserDetailsService {
         student = studentService.getStudentByUsername(username);
         return new User(student.getUsername(), student.getPassword(), new ArrayList<>());
     }
+
 }

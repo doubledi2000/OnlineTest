@@ -16,7 +16,7 @@ public class Test implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "title",nullable = false, length = 255)
+    @Column(name = "title", nullable = false, length = 255)
     private String title;
 
     @Column(name = "start_time", nullable = false)
@@ -36,6 +36,7 @@ public class Test implements Serializable {
     private double score;
     private String status;
     private int time;
+    private String professor;
 
     @ManyToOne
     @JoinColumn(name = "student_code")
@@ -163,5 +164,13 @@ public class Test implements Serializable {
 
     public void setExam(Exam exam) {
         this.exam = exam;
+    }
+
+    public String getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(String professor) {
+        this.professor = professor;
     }
 }

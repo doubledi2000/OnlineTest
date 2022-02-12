@@ -9,6 +9,7 @@ import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.entity.Test;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.service.ExamService;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.service.ProfessorService;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.service.TestService;
+import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.sub.entity.SubExam;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/exam")
+@RequestMapping("/student/exam")
 public class ExamController implements Const {
     @Autowired
     ExamService examService;
@@ -32,12 +33,18 @@ public class ExamController implements Const {
     @Autowired
     private TestService testService;
     @CrossOrigin
-    @GetMapping("/id")
-    public ResponseEntity<Exam> getExamByID(String id){
-        Exam exam = examService.getExamByID(id);
-        if(exam != null )
-            return new ResponseEntity<Exam>(examService.getExamByID(id), HttpStatus.OK);
-        return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+    @GetMapping("/get/own/{id}")
+    public ResponseEntity<SubExam> getExamByID(@RequestHeader Map<String, Object> headers, @PathVariable("id") String id){
+        try {
+            String jwt = headers.get(AUTH).toString().substring(7);
+            Student student = jwtTokenUtil.getStudentFromToken(jwt);
+            SubExam exam = examService.getExamWithStatus(student.getStudentCode(), id);
+            if(exam != null )
+                return new ResponseEntity<>(exam, HttpStatus.OK);
+            return new ResponseEntity<>(new SubExam(),HttpStatus.NO_CONTENT);
+        }catch (Exception e){
+            return new ResponseEntity<>(new SubExam(), HttpStatus.NO_CONTENT);
+        }
     }
     @CrossOrigin
     @PostMapping("/create")
@@ -78,6 +85,9 @@ public class ExamController implements Const {
         try {
             String jwt = headers.get(AUTH).toString().substring(7);
             Student student = jwtTokenUtil.getStudentFromToken(jwt);
+            if (examService.getExamByStudentCodeAndExamID(student.getStudentCode(), id) != null) {
+                return new ResponseEntity<>(new ResponseMessage(1, "already joined"),HttpStatus.NO_CONTENT);
+            }
             Exam exam = examService.getExamByID(id);
             Test test = new Test();
             if(exam.getStatus().equals(EXAM_STT_APPROVED)) {
@@ -100,6 +110,7 @@ public class ExamController implements Const {
             return new ResponseEntity<>(new ResponseMessage(1,e.getMessage()), HttpStatus.valueOf(501));
         }
     }
+
 
 
 }

@@ -70,12 +70,13 @@ public class StudentController implements Const {
     }
     @CrossOrigin
     @PatchMapping("/edit")
-    public void editStudentProfile(@RequestBody Student newInfo){
-        Student oldInfo = studentService.getStudentById("0301");
-        newInfo.setStudentCode("0301");
-        newInfo.setUsername(oldInfo.getUsername());
-        newInfo.setRole(oldInfo.getRole());
-        studentService.updateStudent("0101", newInfo);
+    public void editStudentProfile(@RequestHeader Map<String, Object> headers, @RequestBody Student newInfo){
+        String jwt = headers.get(AUTH).toString().substring(7);
+        Student student = jwtTokenUtil.getStudentFromToken(jwt);
+        newInfo.setStudentCode(student.getStudentCode());
+        newInfo.setUsername(student.getUsername());
+        newInfo.setRole(student.getRole());
+        studentService.updateStudent(student.getStudentCode(), newInfo);
     }
     @CrossOrigin
     @PostMapping("/login")
