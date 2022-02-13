@@ -21,9 +21,10 @@ public interface TestService {
 
     public abstract Test getTestByTestID(long id);
 
-    public abstract List<Test> getTestByStudentIDandStatus(String id,String stt);
+    public abstract List<Test> getTestByStudentIDandStatus(String id, String stt);
 
     public abstract void generateQuestion(long id);
+
     public abstract List<Test> getOwnTest(String id);
 
     public abstract List<SubTest> getOwnTestByStatus(String id, String status);

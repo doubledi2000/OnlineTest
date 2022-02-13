@@ -37,30 +37,30 @@ public class TestController implements Const {
     //get Test
     @CrossOrigin
     @GetMapping("/{id}")
-    public Test getTest(@PathVariable long id){
+    public Test getTest(@PathVariable long id) {
         return testService.getTestByTestID(id);
     }
 
     //submit Test
     @CrossOrigin
-    @PutMapping("submit/{id}")
-    public ResponseEntity<?> submitTest(@RequestHeader Map<String, Object> headers,@PathVariable long id, @RequestBody Collection<StudentssAnswer> answers){
+    @PutMapping("/submit/{id}")
+    public ResponseEntity<?> submitTest(@RequestHeader Map<String, Object> headers, @PathVariable long id, @RequestBody Collection<StudentssAnswer> answers) {
         try {
             String jwt = headers.get(AUTH).toString().substring(7);
             Student student = jwtTokenUtil.getStudentFromToken(jwt);
             Test test = testService.getTestByTestID(id);
             if (test == null) {
-                return new ResponseEntity<>(new ResponseMessage(1, "test doesn't exists"), HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(new ResponseMessage(1, "test doesn't exists"), HttpStatus.OK);
             }
-            if(!test.getStudent().getStudentCode().equals(student.getStudentCode())) {
-                return new ResponseEntity<>(new ResponseMessage(1, "cannot submit"), HttpStatus.NO_CONTENT);
+            if (!test.getStudent().getStudentCode().equals(student.getStudentCode())) {
+                return new ResponseEntity<>(new ResponseMessage(1, "cannot submit"), HttpStatus.OK);
             }
-            if(!test.getStatus().equals(TEST_STT_WAITING)) {
-                return new ResponseEntity<>(new ResponseMessage(1, "permision denied"), HttpStatus.NO_CONTENT);
+            if (!test.getStatus().equals(TEST_STT_WAITING)) {
+                return new ResponseEntity<>(new ResponseMessage(1, "permision denied"), HttpStatus.OK);
             }
-            studentssAnswerService.summitTest(1l, answers);
-            return new ResponseEntity<>(testService.getTestByTestID(1l), HttpStatus.OK);
-        }catch (Exception e) {
+            test = studentssAnswerService.summitTest(id, answers);
+            return new ResponseEntity<>(test, HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.FORBIDDEN);
         }
     }
@@ -68,7 +68,7 @@ public class TestController implements Const {
     //get test by studentID and status of test
     @CrossOrigin
     @GetMapping("/get/{status}")
-    public ResponseEntity<?> getTestsByStatus(@RequestHeader Map<String, Object> headers,@PathVariable("status") String status){
+    public ResponseEntity<?> getTestsByStatus(@RequestHeader Map<String, Object> headers, @PathVariable("status") String status) {
         try {
             String jwt = headers.get(AUTH).toString().substring(7);
             Student student = jwtTokenUtil.getStudentFromToken(jwt);
@@ -77,36 +77,37 @@ public class TestController implements Const {
                 t.setRealTime(new Date(System.currentTimeMillis() + 7 * 60 * 60 * 1000));
             }
             return new ResponseEntity<>(tests, HttpStatus.OK);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.FORBIDDEN);
         }
 //        return (List<Test>) new ResponseEntity<List<Test>>(testService.getTestByStudentIDandStatus(studentID, status),HttpStatus.OK);
     }
 
     @CrossOrigin
-    @GetMapping("take-a-test/{id}")
-    public ResponseEntity<?> takeATest(@RequestHeader Map<String, Object> headers,@PathVariable("id") long id) {
+    @GetMapping("/take-a-test/{id}")
+    public ResponseEntity<?> takeATest(@RequestHeader Map<String, Object> headers, @PathVariable("id") long id) {
         try {
 
             String jwt = headers.get(AUTH).toString().substring(7);
             Student student = jwtTokenUtil.getStudentFromToken(jwt);
             Test test = testService.getTestByTestID(id);
+
             if (test == null) {
-                return new ResponseEntity<>(new ResponseMessage(1, "test not exist"), HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(new ResponseMessage(1, "test not exist"), HttpStatus.CONTINUE);
             }
-            if(!test.getStudent().getStudentCode().equals(student.getStudentCode())) {
-                return new ResponseEntity<>(new ResponseMessage(1,"cannot take a test"), HttpStatus.FORBIDDEN);
+            if (!test.getStudent().getStudentCode().equals(student.getStudentCode())) {
+                return new ResponseEntity<>(new ResponseMessage(1, "cannot take a test"), HttpStatus.FORBIDDEN);
             }
             if (!test.getStatus().equals(TEST_STT_WAITING)) {
-                return new ResponseEntity<>(new ResponseMessage(1, "permission denied"), HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(new ResponseMessage(1, "permission denied"), HttpStatus.CONTINUE);
             }
-            if (test.getStartTime().before(new Date(System.currentTimeMillis() + 7 * 60 * 60))) {
-                return new ResponseEntity<>(new ResponseMessage(1, "it's not time for the exam yet"), HttpStatus.NO_CONTENT);
+            if (test.getStartTime().after(new Date(System.currentTimeMillis() + 7 * 60 * 60))) {
+                return new ResponseEntity<>(new ResponseMessage(1, "it's not time for the exam yet"), HttpStatus.CONTINUE);
             }
-            List<QuestionssTest> ques = questionssTestService.getQuestionByTestID(1);
+            List<QuestionssTest> ques = questionssTestService.getQuestionByTestID(id);
 
-            return new ResponseEntity<>(ques,HttpStatus.OK);
-        }catch (Exception e) {
+            return new ResponseEntity<>(ques, HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.FORBIDDEN);
         }
     }
@@ -119,20 +120,20 @@ public class TestController implements Const {
             Student student = jwtTokenUtil.getStudentFromToken(jwt);
             List<SubTest> tests = testService.getOwnTestByStatus(student.getStudentCode(), status);
             return new ResponseEntity<>(tests, HttpStatus.OK);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.FORBIDDEN);
         }
     }
 
     @CrossOrigin
     @GetMapping("/get/own/test/{exam-code}")
-    public ResponseEntity<?> getOwnTestByExamCode(@RequestHeader Map<String, Object> headers, @PathVariable("exam-code") String examCode){
+    public ResponseEntity<?> getOwnTestByExamCode(@RequestHeader Map<String, Object> headers, @PathVariable("exam-code") String examCode) {
         try {
             String jwt = headers.get(AUTH).toString().substring(7);
             Student student = jwtTokenUtil.getStudentFromToken(jwt);
             Test t = testService.getOwnTestByExamCode(student.getStudentCode(), examCode);
             return new ResponseEntity<>(t, HttpStatus.OK);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.FORBIDDEN);
         }
     }

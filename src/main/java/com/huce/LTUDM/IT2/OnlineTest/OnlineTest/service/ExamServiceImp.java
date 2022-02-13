@@ -58,7 +58,7 @@ public class ExamServiceImp implements ExamService, Const {
     @Override
     public SubExam getExamWithStatus(String studentCode, String ec) {
         Exam exam = repo.findById(ec).get();
-        if(exam == null) {
+        if (exam == null) {
             return new SubExam();
         }
         Test test = testRepository.getTestByStudentIDAndExamID(studentCode, ec);
@@ -66,12 +66,12 @@ public class ExamServiceImp implements ExamService, Const {
         subExam.setExamCode(exam.getExamCode());
         subExam.setTitle(exam.getTitle());
         subExam.setProfessor(exam.getProfessor().getFullname());
-        if(test == null) {
+        if (test == null) {
             subExam.setStatus(EXAM_JOIN_STT_NOT_YET);
-        }else {
-            if (test.getStudent().equals(TEST_STT_PENDING)){
+        } else {
+            if (test.getStudent().equals(TEST_STT_PENDING)) {
                 subExam.setStatus(EXAM_JOIN_STT_PENDING);
-            }else {
+            } else {
                 subExam.setStatus(EXAM_JOIN_STT_JOINED);
             }
         }

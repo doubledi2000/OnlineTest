@@ -41,9 +41,9 @@ public class ExamController implements Const {
             SubExam exam = examService.getExamWithStatus(student.getStudentCode(), id);
             if(exam != null )
                 return new ResponseEntity<>(exam, HttpStatus.OK);
-            return new ResponseEntity<>(new SubExam(),HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(new SubExam(),HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<>(new SubExam(), HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(new SubExam(), HttpStatus.OK);
         }
     }
     @CrossOrigin
@@ -59,15 +59,15 @@ public class ExamController implements Const {
     }
     @CrossOrigin
     @PutMapping("/edit/{examCode}")
-    public  ResponseEntity<?> editExam(@PathVariable("examCode") String examCode, @RequestBody Exam newExam){
+    public ResponseEntity<?> editExam(@PathVariable("examCode") String examCode, @RequestBody Exam newExam) {
         try {
             Exam exam = examService.getExamByID(examCode);
-            if(exam == null){
+            if (exam == null) {
                 return new ResponseEntity<>(new ResponseMessage(1, "Exam doesn't exist"), HttpStatus.valueOf(501));
             }
-            examService.updateExam(examCode,newExam);
-            return new ResponseEntity<>(new ResponseMessage(0,"edit ok"), HttpStatus.OK);
-        }catch (Exception e){
+            examService.updateExam(examCode, newExam);
+            return new ResponseEntity<>(new ResponseMessage(0, "edit ok"), HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.valueOf(501));
         }
     }
@@ -86,7 +86,7 @@ public class ExamController implements Const {
             String jwt = headers.get(AUTH).toString().substring(7);
             Student student = jwtTokenUtil.getStudentFromToken(jwt);
             if (examService.getExamByStudentCodeAndExamID(student.getStudentCode(), id) != null) {
-                return new ResponseEntity<>(new ResponseMessage(1, "already joined"),HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(new ResponseMessage(1, "already joined"),HttpStatus.OK);
             }
             Exam exam = examService.getExamByID(id);
             Test test = new Test();

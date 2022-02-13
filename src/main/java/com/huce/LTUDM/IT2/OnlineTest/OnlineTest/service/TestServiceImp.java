@@ -45,7 +45,7 @@ public class TestServiceImp implements TestService, Const {
     @Override
     public Collection<Test> getTestByStudentID(String id) {
         Collection<Test> tests = repo.getTestByStudentID(id);
-        for(Test t : tests){
+        for (Test t : tests) {
             t.setRealTime(new Date());
         }
         return tests;
@@ -53,7 +53,7 @@ public class TestServiceImp implements TestService, Const {
 
     @Override
     public Test getTestByTestID(long id) {
-        Test test =repo.findById(id).get();
+        Test test = repo.findById(id).get();
         test.setRealTime(new Date());
         return test;
     }
@@ -61,7 +61,7 @@ public class TestServiceImp implements TestService, Const {
     @Override
     public List<Test> getTestByStudentIDandStatus(String id, String stt) {
         List<Test> tests = repo.getTestByStudentIDandStatus(id, stt);
-        for(Test t : tests){
+        for (Test t : tests) {
             t.setRealTime(new Date());
         }
         return tests;
@@ -88,7 +88,7 @@ public class TestServiceImp implements TestService, Const {
 
             List<StudentssAnswer> studentssAnswers = new ArrayList<>();
             questionssTestRepository.save(qus);
-            for (Answer ans: answers) {
+            for (Answer ans : answers) {
                 StudentssAnswer studentssAnswer = new StudentssAnswer();
                 studentssAnswer.setQuestion(qus);
                 studentssAnswer.setChoose(false);
@@ -119,13 +119,13 @@ public class TestServiceImp implements TestService, Const {
         List<Test> mainTest = repo.getTestByStudentIDandStatus(id, status);
         switch (status) {
             case TEST_STT_WAITING:
-                for (Test t: mainTest){
+                for (Test t : mainTest) {
                     SubTest s = new SubTest();
                     s.setId(t.getId());
                     s.setProfessor(t.getProfessor());
                     s.setTime(t.getTime());
                     s.setStart_time(t.getStartTime());
-                    s.setRealTime(new Date());
+                    s.setRealTime(new Date(System.currentTimeMillis() + 7 * 60 * 60));
                     s.setStatus(t.getStatus());
                     s.setExamCode(t.getExam().getExamCode());
                     s.setTitle(t.getTitle());
@@ -133,7 +133,7 @@ public class TestServiceImp implements TestService, Const {
                 }
                 break;
             case TEST_STT_TOOK_PLACE:
-                for (Test t: mainTest){
+                for (Test t : mainTest) {
                     SubTest s = new SubTest();
                     s.setId(t.getId());
                     s.setProfessor(t.getProfessor());

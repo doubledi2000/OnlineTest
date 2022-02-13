@@ -28,6 +28,7 @@ public class StudentssAnswerServiceImp implements StudentssAnswerService, Const 
     private AnswerRepository answerRepository;
     @Autowired
     private TestRepository testRepository;
+
     @Override
     public void createStudentssAnswer(StudentssAnswer answer) {
         repo.save(answer);
@@ -50,33 +51,34 @@ public class StudentssAnswerServiceImp implements StudentssAnswerService, Const 
     }
 
     @Override
-    public void summitTest(long id, Collection<StudentssAnswer> answers) {
-        for (StudentssAnswer answer: answers){
-            answer.setQuestion(repo.findById(answer.getId()).get().getQuestion());
-            answer.setTrue_false(repo.findById(answer.getId()).get().isTrue_false());
-            repo.save(answer);
+    public Test summitTest(long id, Collection<StudentssAnswer> answers) {
+        for (StudentssAnswer answer : answers) {
+            StudentssAnswer s = repo.findById(answer.getId()).get();
+            s.setChoose(answer.getChoose());
+            repo.save(s);
         }
         Test test = testRepository.findById(id).get();
         test.setSubmittionTime(new Date(System.currentTimeMillis() + 7 * 60 * 60 * 1000));
         List<QuestionssTest> questionssTests = test.getQuestionss();
         int correctAnswer = 0;
-        for (QuestionssTest qus : questionssTests){
-            if(qus.getStudentssAnswers().size() == 0) continue;
+        for (QuestionssTest qus : questionssTests) {
+            if (qus.getStudentssAnswers().size() == 0) continue;
             int i = 0;
-            for (StudentssAnswer ans : qus.getStudentssAnswers()){
-                if(ans.getChoose() != ans.isTrue_false()) {
+            for (StudentssAnswer ans : qus.getStudentssAnswers()) {
+                if (ans.getChoose() != ans.isTrue_false()) {
                     break;
                 }
                 i++;
-                if(qus.getStudentssAnswers().size() == i){
+                if (qus.getStudentssAnswers().size() == i) {
                     correctAnswer++;
                 }
             }
         }
         test.setCorrectAnswer(correctAnswer);
         double sc = (double) correctAnswer / test.getNoq();
-        test.setScore(Math.round(sc * 1000.0)/100.0);
+        test.setScore(Math.round(sc * 1000.0) / 100.0);
         test.setStatus(TEST_STT_TOOK_PLACE);
         testRepository.save(test);
+        return test;
     }
 }

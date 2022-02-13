@@ -17,13 +17,14 @@ public class QuestionssTestController {
 
     @CrossOrigin
     @GetMapping("/question/{id}")
-    public ResponseEntity<Collection<QuestionssTest>> getQuestionssTest(@PathVariable long id){
+    public ResponseEntity<Collection<QuestionssTest>> getQuestionssTest(@PathVariable long id) {
         Collection<QuestionssTest> list = questionssTestService.getQuestionByTestID(id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
     @CrossOrigin
     @GetMapping("/{id}")
-    public ResponseEntity<?> getTest(@PathVariable long id){
+    public ResponseEntity<?> getTest(@PathVariable long id) {
         return new ResponseEntity<>(questionssTestService.getQuestionssTestByQuestionID(id), HttpStatus.OK);
     }
 }

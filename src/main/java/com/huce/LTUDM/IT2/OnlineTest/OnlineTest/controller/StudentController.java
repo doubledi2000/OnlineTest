@@ -43,45 +43,54 @@ public class StudentController implements Const {
 
     @CrossOrigin
     @GetMapping("/detail/{id}")
-    public ResponseEntity<?> getInfo(@PathVariable String id){
+    public ResponseEntity<?> getInfo(@PathVariable String id) {
         Student student = studentService.getStudentById(id);
-        return new ResponseEntity<>(student,HttpStatus.OK);
+        return new ResponseEntity<>(student, HttpStatus.OK);
     }
+
     @CrossOrigin
     @GetMapping("my-profile")
     public ResponseEntity<?> getMyProfile(@RequestHeader Map<String, Object> headers) {
         try {
             String jwt = headers.get(AUTH).toString().substring(7);
             return new ResponseEntity<>(jwtTokenUtil.getStudentFromToken(jwt), HttpStatus.OK);
-        }catch (Exception e ) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.valueOf(501));
         }
     }
+
     @CrossOrigin
     @GetMapping("/all")
-    public  ResponseEntity<Collection<Student>> getAll(){
+    public ResponseEntity<Collection<Student>> getAll() {
         Collection<Student> list = studentService.getAll();
         return new ResponseEntity<Collection<Student>>(list, HttpStatus.OK);
     }
+
     @CrossOrigin
     @PostMapping("/create")
-    public void createStudent(@RequestBody Student student){
+    public void createStudent(@RequestBody Student student) {
         studentService.crateStudent(student);
     }
+
     @CrossOrigin
     @PatchMapping("/edit")
-    public void editStudentProfile(@RequestHeader Map<String, Object> headers, @RequestBody Student newInfo){
-        String jwt = headers.get(AUTH).toString().substring(7);
-        Student student = jwtTokenUtil.getStudentFromToken(jwt);
-        newInfo.setStudentCode(student.getStudentCode());
-        newInfo.setUsername(student.getUsername());
-        newInfo.setRole(student.getRole());
-        studentService.updateStudent(student.getStudentCode(), newInfo);
+    public ResponseEntity<?> editStudentProfile(@RequestHeader Map<String, Object> headers, @RequestBody Student newInfo) {
+        try{
+            String jwt = headers.get(AUTH).toString().substring(7);
+            Student student = jwtTokenUtil.getStudentFromToken(jwt);
+            newInfo.setStudentCode(student.getStudentCode());
+            newInfo.setUsername(student.getUsername());
+            newInfo.setRole(student.getRole());
+            studentService.updateStudent(student.getStudentCode(), newInfo);
+            return new ResponseEntity<>(new ResponseMessage(0, "edited"), HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.CONTINUE);
+        }
     }
+
     @CrossOrigin
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), MD5Converter.StringToMd5(authenticationRequest.getPassword()))
@@ -90,17 +99,19 @@ public class StudentController implements Const {
             final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
             final String jwt = jwtTokenUtil.generateToken(userDetails);
-            return new ResponseEntity<>(new AuthenticationResponse(0,jwt), HttpStatus.OK);
-        }catch (BadCredentialsException e) {
+            return new ResponseEntity<>(new AuthenticationResponse(0, jwt), HttpStatus.OK);
+        } catch (BadCredentialsException e) {
             return new ResponseEntity<>(new AuthenticationResponse(1, null), HttpStatus.UNAUTHORIZED);
         }
 
     }
+
     @CrossOrigin
     @GetMapping("/login")
     public String getLogin() {
         return "Login to system";
     }
+
     @CrossOrigin
     @PostMapping("sign-up")
     public ResponseEntity<?> signup(@RequestBody Student student) throws Exception {
@@ -109,12 +120,11 @@ public class StudentController implements Const {
             studentService.crateStudent(student);
 
             return new ResponseEntity<>(new ResponseMessage(0, "add ok"), HttpStatus.valueOf(201));
+        } catch (NoSuchAlgorithmException e) {
+            return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.FORBIDDEN);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.CONFLICT);
         }
-        catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }catch (Exception e) {
 
-        }
-        return new ResponseEntity<>(new ResponseMessage(1, "failed to create student"), HttpStatus.CONFLICT);
     }
 }
