@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-
+import java.util.Collections;
 @Service
 public class TestServiceImp implements TestService, Const {
 
@@ -117,24 +117,28 @@ public class TestServiceImp implements TestService, Const {
     public List<SubTest> getOwnTestByStatus(String id, String status) {
         List<SubTest> tests = new ArrayList<>();
         List<Test> mainTest = repo.getTestByStudentIDandStatus(id, status);
-        switch (status) {
-            case TEST_STT_WAITING:
-                for (Test t : mainTest) {
+        if (status.equals(TEST_STT_WAITING)) {
+            List<Test> subTest = repo.getTestByStudentIDandStatus(id, TEST_STT_GOING_ON);
+            mainTest.addAll(0, subTest);
+            Collections.sort(mainTest);
+        }
+        for (Test t : mainTest) {
+            switch (t.getStatus()) {
+                case TEST_STT_WAITING:
+                case TEST_STT_GOING_ON:
                     SubTest s = new SubTest();
                     s.setId(t.getId());
                     s.setProfessor(t.getProfessor());
                     s.setTime(t.getTime());
-                    s.setStart_time(t.getStartTime());
-                    s.setRealTime(new Date(System.currentTimeMillis() + 7 * 60 * 60));
+                    s.setStartTest(new Date(t.getExam().getStartTime().getTime() + 7 * 60 * 60 * 1000));
+                    s.setRealTime(new Date(System.currentTimeMillis() + 7 * 60 * 60 * 1000));
                     s.setStatus(t.getStatus());
                     s.setExamCode(t.getExam().getExamCode());
                     s.setTitle(t.getTitle());
                     tests.add(s);
-                }
-                break;
-            case TEST_STT_TOOK_PLACE:
-                for (Test t : mainTest) {
-                    SubTest s = new SubTest();
+                    break;
+                case TEST_STT_TOOK_PLACE:
+                    s = new SubTest();
                     s.setId(t.getId());
                     s.setProfessor(t.getProfessor());
                     s.setTime(t.getTime());
@@ -146,15 +150,15 @@ public class TestServiceImp implements TestService, Const {
                     s.setTitle(t.getTitle());
                     s.setStatus(t.getStatus());
                     tests.add(s);
-                }
-                break;
+                    break;
 
-            case TEST_STT_PENDING:
-                break;
+                case TEST_STT_PENDING:
+                    break;
 
-            default:
-                tests = null;
-                break;
+                default:
+                    tests = null;
+                    break;
+            }
         }
         return tests;
     }

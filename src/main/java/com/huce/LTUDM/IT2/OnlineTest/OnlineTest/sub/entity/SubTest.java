@@ -15,6 +15,8 @@ public class SubTest {
     private String status;
     private String examCode;
     private String title;
+    private Date startTest;
+    private Date endTest;
 
     public SubTest() {
     }
@@ -32,6 +34,30 @@ public class SubTest {
         this.status = status;
         this.examCode = examCode;
         this.title = title;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getStartTest() {
+        return startTest;
+    }
+
+    public void setStartTest(Date startTest) {
+        this.startTest = startTest;
+    }
+
+    public Date getEndTest() {
+        return endTest;
+    }
+
+    public void setEndTest(Date endTest) {
+        this.endTest = endTest;
     }
 
     public long getId() {

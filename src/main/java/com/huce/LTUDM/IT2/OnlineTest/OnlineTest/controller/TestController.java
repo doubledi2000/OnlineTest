@@ -4,7 +4,9 @@ import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.common.Const;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.common.ResponseMessage;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.entity.*;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.service.*;
+import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.sub.entity.SubQuestion;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.sub.entity.SubTest;
+import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.sub.entity.TestInfo;
 import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -61,7 +63,7 @@ public class TestController implements Const {
             test = studentssAnswerService.summitTest(id, answers);
             return new ResponseEntity<>(test, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.CONFLICT);
         }
     }
 
@@ -78,13 +80,13 @@ public class TestController implements Const {
             }
             return new ResponseEntity<>(tests, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.CONFLICT);
         }
 //        return (List<Test>) new ResponseEntity<List<Test>>(testService.getTestByStudentIDandStatus(studentID, status),HttpStatus.OK);
     }
 
     @CrossOrigin
-    @GetMapping("/take-a-test/{id}")
+    @PutMapping("/take-a-test/{id}")
     public ResponseEntity<?> takeATest(@RequestHeader Map<String, Object> headers, @PathVariable("id") long id) {
         try {
 
@@ -93,22 +95,32 @@ public class TestController implements Const {
             Test test = testService.getTestByTestID(id);
 
             if (test == null) {
-                return new ResponseEntity<>(new ResponseMessage(1, "test not exist"), HttpStatus.CONTINUE);
+                return new ResponseEntity<>(new ResponseMessage(1, "test not exist"), HttpStatus.OK);
             }
             if (!test.getStudent().getStudentCode().equals(student.getStudentCode())) {
-                return new ResponseEntity<>(new ResponseMessage(1, "cannot take a test"), HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(new ResponseMessage(1, "cannot take a test"), HttpStatus.OK);
             }
-            if (!test.getStatus().equals(TEST_STT_WAITING)) {
-                return new ResponseEntity<>(new ResponseMessage(1, "permission denied"), HttpStatus.CONTINUE);
+            if (!(test.getStatus().equals(TEST_STT_WAITING) ||test.getStatus().equals(TEST_STT_GOING_ON))) {
+                return new ResponseEntity<>(new ResponseMessage(1, "permission denied"), HttpStatus.OK);
             }
-            if (test.getStartTime().after(new Date(System.currentTimeMillis() + 7 * 60 * 60))) {
-                return new ResponseEntity<>(new ResponseMessage(1, "it's not time for the exam yet"), HttpStatus.CONTINUE);
+            if (test.getExam().getStartTime().after(new Date(System.currentTimeMillis() + 7 * 60 * 60 * 1000))) {
+                return new ResponseEntity<>(new ResponseMessage(1, "it's not time for the exam yet"), HttpStatus.OK);
             }
-            List<QuestionssTest> ques = questionssTestService.getQuestionByTestID(id);
+            //set start_time and status
+            if(test.getStatus().equals(TEST_STT_WAITING)) {
+                test.setStartTime(new Date(System.currentTimeMillis() + 7 *60 *60 * 1000));
+                test.setStatus(TEST_STT_GOING_ON);
+                testService.updateTest(id, test);
+            }
 
-            return new ResponseEntity<>(ques, HttpStatus.OK);
+            List<SubQuestion> ques = questionssTestService.getSubQuestionTestByTestID(id);
+            TestInfo testInfo = new TestInfo(test);
+            testInfo.setQuestions(ques);
+
+            return new ResponseEntity<>(testInfo, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.FORBIDDEN);
+            e.printStackTrace();
+            return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.CONFLICT);
         }
     }
 
@@ -121,7 +133,8 @@ public class TestController implements Const {
             List<SubTest> tests = testService.getOwnTestByStatus(student.getStudentCode(), status);
             return new ResponseEntity<>(tests, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.FORBIDDEN);
+            e.printStackTrace();
+            return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.CONFLICT);
         }
     }
 
@@ -134,7 +147,7 @@ public class TestController implements Const {
             Test t = testService.getOwnTestByExamCode(student.getStudentCode(), examCode);
             return new ResponseEntity<>(t, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.CONFLICT);
         }
     }
 }

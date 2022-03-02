@@ -73,7 +73,7 @@ public class StudentController implements Const {
     }
 
     @CrossOrigin
-    @PatchMapping("/edit")
+    @PutMapping("/edit")
     public ResponseEntity<?> editStudentProfile(@RequestHeader Map<String, Object> headers, @RequestBody Student newInfo) {
         try{
             String jwt = headers.get(AUTH).toString().substring(7);
@@ -84,7 +84,7 @@ public class StudentController implements Const {
             studentService.updateStudent(student.getStudentCode(), newInfo);
             return new ResponseEntity<>(new ResponseMessage(0, "edited"), HttpStatus.OK);
         }catch (Exception e) {
-            return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.CONTINUE);
+            return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.OK);
         }
     }
 

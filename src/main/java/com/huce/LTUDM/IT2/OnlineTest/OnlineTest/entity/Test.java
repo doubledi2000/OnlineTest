@@ -3,6 +3,7 @@ package com.huce.LTUDM.IT2.OnlineTest.OnlineTest.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "test")
-public class Test implements Serializable {
+public class Test implements Serializable, Comparable<Test> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -172,5 +173,14 @@ public class Test implements Serializable {
 
     public void setProfessor(String professor) {
         this.professor = professor;
+    }
+
+
+    @Override
+    public int compareTo(Test o) {
+        long l = getExam().getStartTime().getTime() - o.getExam().getStartTime().getTime();
+        if(l > 0) return 1;
+        else if(l==0) return 0;
+        else return -1;
     }
 }

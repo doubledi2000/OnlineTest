@@ -93,7 +93,7 @@ public class ExamController implements Const {
             if(exam.getStatus().equals(EXAM_STT_APPROVED)) {
                 test.setTitle(exam.getTitle());
                 test.setStatus(TEST_STT_WAITING);
-                test.setStartTime(exam.getStartTime());
+                test.setStartTime(new Date());
                 test.setRealTime(new Date());
                 test.setSubmittionTime(new Date());
                 test.setNoq(exam.getQuestionList().size());
@@ -102,6 +102,7 @@ public class ExamController implements Const {
                 test.setStudent(student);
                 test.setExam(exam);
                 test.setTime(90);
+                test.setProfessor(exam.getProfessor().getFullname());
                 testService.createTest(test);
                 testService.generateQuestion(test.getId());
             }
