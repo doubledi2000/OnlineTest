@@ -54,7 +54,7 @@ public class StudentssAnswerServiceImp implements StudentssAnswerService, Const 
     public Test summitTest(long id, Collection<StudentssAnswer> answers) {
         for (StudentssAnswer answer : answers) {
             StudentssAnswer s = repo.findById(answer.getId()).get();
-            if (s.getQuestion().getTest().getId() == id){
+            if (s.getQuestion().getTest().getId() != id){
                 continue;
             }
             s.setChoose(answer.getChoose());
