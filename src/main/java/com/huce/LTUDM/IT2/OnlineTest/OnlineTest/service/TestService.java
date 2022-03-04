@@ -29,6 +29,6 @@ public interface TestService {
 
     public abstract List<SubTest> getOwnTestByStatus(String id, String status);
 
-    public abstract Test getOwnTestByExamCode(String id, String examCode);
+    public abstract SubTest getOwnTestByExamCode(String id, String examCode);
 
 }

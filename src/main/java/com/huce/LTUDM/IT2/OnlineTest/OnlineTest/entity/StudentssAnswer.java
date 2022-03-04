@@ -28,6 +28,9 @@ public class StudentssAnswer implements Serializable {
     private boolean true_false;
     @Column(name = "your_choose")
     private boolean choose;
+    @JsonIgnore
+    @Column(name = "answer_id")
+    private long answerId;
     @ManyToOne
     @JoinColumn(name = "question_id")
     @JsonIgnore
@@ -51,6 +54,14 @@ public class StudentssAnswer implements Serializable {
 
     public boolean isTrue_false() {
         return true_false;
+    }
+
+    public long getAnswerId() {
+        return answerId;
+    }
+
+    public void setAnswerId(long answerId) {
+        this.answerId = answerId;
     }
 
     public void setTrue_false(boolean true_false) {

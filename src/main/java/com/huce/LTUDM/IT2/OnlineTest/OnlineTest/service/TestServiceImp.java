@@ -94,6 +94,7 @@ public class TestServiceImp implements TestService, Const {
                 studentssAnswer.setChoose(false);
                 studentssAnswer.setTrue_false(ans.getTF());
                 studentssAnswer.setContent(ans.getContent());
+                studentssAnswer.setAnswerId(ans.getId());
                 studentssAnswers.add(studentssAnswer);
                 studentssAnswerRepository.save(studentssAnswer);
             }
@@ -109,8 +110,12 @@ public class TestServiceImp implements TestService, Const {
     }
 
     @Override
-    public Test getOwnTestByExamCode(String id, String examCode) {
-        return repo.getTestByStudentIDAndExamID(id, examCode);
+    public SubTest getOwnTestByExamCode(String id, String examCode) {
+
+        Test t = repo.getTestByStudentIDAndExamID(id, examCode);
+        SubTest sub = new SubTest(t);
+        return sub;
+
     }
 
     @Override
@@ -130,7 +135,7 @@ public class TestServiceImp implements TestService, Const {
                     s.setId(t.getId());
                     s.setProfessor(t.getProfessor());
                     s.setTime(t.getTime());
-                    s.setStartTest(new Date(t.getExam().getStartTime().getTime() + 7 * 60 * 60 * 1000));
+                    s.setStartTest(new Date(t.getExam().getStartTime().getTime()));
                     s.setRealTime(new Date(System.currentTimeMillis() + 7 * 60 * 60 * 1000));
                     s.setStatus(t.getStatus());
                     s.setExamCode(t.getExam().getExamCode());

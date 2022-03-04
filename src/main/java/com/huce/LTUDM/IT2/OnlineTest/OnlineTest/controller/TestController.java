@@ -57,7 +57,7 @@ public class TestController implements Const {
             if (!test.getStudent().getStudentCode().equals(student.getStudentCode())) {
                 return new ResponseEntity<>(new ResponseMessage(1, "cannot submit"), HttpStatus.OK);
             }
-            if (!test.getStatus().equals(TEST_STT_WAITING)) {
+            if (!(test.getStatus().equals(TEST_STT_WAITING) || test.getStatus().equals(TEST_STT_GOING_ON))) {
                 return new ResponseEntity<>(new ResponseMessage(1, "permision denied"), HttpStatus.OK);
             }
             test = studentssAnswerService.summitTest(id, answers);
@@ -107,16 +107,15 @@ public class TestController implements Const {
                 return new ResponseEntity<>(new ResponseMessage(1, "it's not time for the exam yet"), HttpStatus.OK);
             }
             //set start_time and status
+
+            List<SubQuestion> ques = questionssTestService.getSubQuestionTestByTestID(id);
+            TestInfo testInfo = new TestInfo(test);
+            testInfo.setQuestions(ques);
             if(test.getStatus().equals(TEST_STT_WAITING)) {
                 test.setStartTime(new Date(System.currentTimeMillis() + 7 *60 *60 * 1000));
                 test.setStatus(TEST_STT_GOING_ON);
                 testService.updateTest(id, test);
             }
-
-            List<SubQuestion> ques = questionssTestService.getSubQuestionTestByTestID(id);
-            TestInfo testInfo = new TestInfo(test);
-            testInfo.setQuestions(ques);
-
             return new ResponseEntity<>(testInfo, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -144,7 +143,7 @@ public class TestController implements Const {
         try {
             String jwt = headers.get(AUTH).toString().substring(7);
             Student student = jwtTokenUtil.getStudentFromToken(jwt);
-            Test t = testService.getOwnTestByExamCode(student.getStudentCode(), examCode);
+            SubTest t = testService.getOwnTestByExamCode(student.getStudentCode(), examCode);
             return new ResponseEntity<>(t, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new ResponseMessage(1, e.getMessage()), HttpStatus.CONFLICT);

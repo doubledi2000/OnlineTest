@@ -1,5 +1,7 @@
 package com.huce.LTUDM.IT2.OnlineTest.OnlineTest.sub.entity;
 
+import com.huce.LTUDM.IT2.OnlineTest.OnlineTest.entity.Test;
+
 import java.util.Date;
 
 public class SubTest {
@@ -35,6 +37,23 @@ public class SubTest {
         this.examCode = examCode;
         this.title = title;
     }
+    public SubTest(Test t){
+        this.id = t.getId();
+        this.professor = t.getProfessor();
+        this.time = t.getTime();
+        this.startTest = t.getExam().getStartTime();
+        this.realTime = new Date(System.currentTimeMillis() + 7 * 60 * 60 * 1000);
+        this.submissionTime = t.getSubmissionTime();
+        this.noq = t.getNoq();
+        this.correct_answers = t.getCorrectAnswer();
+        this.score = t.getScore();
+        this.status = t.getStatus();
+        this.examCode = t.getExam().getExamCode();
+        this.title = t.getTitle();
+        this.endTest = t.getExam().getFinalTime();
+
+    }
+
 
     public Date getStartTime() {
         return startTime;

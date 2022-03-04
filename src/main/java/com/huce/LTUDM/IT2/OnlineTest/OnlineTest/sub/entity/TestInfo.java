@@ -13,9 +13,18 @@ public class TestInfo {
     private Date end_test;
     private int time;
     private Date real_time;
+    private String status;
     private List<SubQuestion> questions;
 
     public TestInfo() {
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public TestInfo(Test test) {
@@ -24,6 +33,7 @@ public class TestInfo {
         this.start = test.getStartTime();
         this.end_test = test.getExam().getFinalTime();
         this.time = test.getTime();
+        this.status = test.getStatus();
         this.real_time = new Date(System.currentTimeMillis() + 7 * 60 * 60 * 1000);
     }
 
